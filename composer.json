@@ -1,0 +1,22 @@
+{
+	"name": "bazo/nette-elasticsearch-extension",
+	"type": "library",
+	"description": "Nette elasticsearch extension",
+	"keywords": ["nette", "elasticsearch", "search", "extension"],
+	"homepage": "https://github.com/bazo/nette-elasticsearch-extension",
+	"authors": [
+		{
+			"name": "Martin Bažík",
+			"email": "martin@bazo.sk",
+			"homepage": "http://bazo.sk"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"nette/nette": "@dev",
+		"ruflin/elastica": "@dev"
+	},
+	"autoload": {
+		"psr-0": {"Bazo": "src/"}
+	}
+}
