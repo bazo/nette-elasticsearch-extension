@@ -14,6 +14,7 @@
 	"require": {
 		"php": ">=5.4.0",
 		"nette/nette": "@dev",
+		"psr/log": "@dev",
 		"ruflin/elastica": "@dev"
 	},
 	"autoload": {
