@@ -58,7 +58,6 @@ class ElasticSearchCreateType extends ElasticSearchCommand
 					// Send mapping to type
 					try {
 						$res = $elasticaMapping->send();
-						var_dump($res);
 						$output->writeln(sprintf('Type <info>%s</info> successfully created in index <info>%s</info>', $typeName, $indexName));
 					} catch(\Elastica\Exception\ResponseException $e) {
 						if(strpos($e->getMessage(), 'IndexMissingException') !== FALSE) {

@@ -35,7 +35,6 @@ class ElasticSearchPanel extends Nette\Object implements \Nette\Diagnostics\IBar
 
 	public function addQuery($query = null)
 	{
-		var_dump($query);
 		$this->queries[] = $query;
 	}
 

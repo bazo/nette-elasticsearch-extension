@@ -42,7 +42,6 @@ class ElasticSearchDropType extends ElasticSearchCommand
 			$data = $node->getInfo()->getData();
 			$port = $node->getInfo()->getPort();
 			$stats = $node->getStats()->get();
-			//dump($stats->get());exit;
 			$table->addRow([$data['name'], $stats['indices']['docs']['count'], $name, $ip, $port, $data['hostname'], $data['version'], $data['transport_address'], $data['http_address']]);
 		}
 
