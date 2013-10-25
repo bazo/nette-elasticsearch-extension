@@ -51,12 +51,12 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 		$elasticaDefinition = $containerBuilder->addDefinition($this->prefix('elastica'))
 				->setClass('Elastica\Client', [$config['config']]);
 		if($debugMode) {
-			$elasticaDefinition->addSetup('setLogger', '@'. $this->prefix('panel'));
+			$elasticaDefinition->addSetup('setLogger', ['@'. $this->prefix('panel')]);
 		}
 		
 		$containerBuilder->addDefinition('elastica')
 				->setClass('Elastica\Client')
-				->setFactory('@container::getService', array($this->prefix('elastica')))
+				->setFactory('@container::getService', [$this->prefix('elastica')])
 				->setAutowired(FALSE);
 		
 		$containerBuilder
