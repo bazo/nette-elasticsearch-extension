@@ -2,6 +2,10 @@
 
 namespace Bazo\ElasticSearch\DI;
 
+use Bazo\Console\DI\ConsoleExtension;
+
+
+
 /**
  * Description of ElasticSearchExtension
  *
@@ -33,6 +37,7 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 	];
 
 
+
 	public function loadConfiguration()
 	{
 		$containerBuilder = $this->getContainerBuilder();
@@ -41,61 +46,61 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 
 		$debugMode = $containerBuilder->expand('%debugMode%');
 
-		$commandArguments = ['@'.$this->prefix('elastica'), $config['types'], $config['indices'], $config['analyzers'], $config['filters']];
-		
+		$commandArguments = ['@' . $this->prefix('elastica'), $config['types'], $config['indices'], $config['analyzers'], $config['filters']];
+
 		$containerBuilder
 				->addDefinition($this->prefix('panel'))
 				->setClass('Bazo\ElasticSearch\Diagnostics\ElasticSearchPanel')
 				->setFactory('Bazo\ElasticSearch\Diagnostics\ElasticSearchPanel::register');
-		
+
 		$elasticaDefinition = $containerBuilder->addDefinition($this->prefix('elastica'))
 				->setClass('Elastica\Client', [$config['config']]);
-		if($debugMode) {
-			$elasticaDefinition->addSetup('setLogger', ['@'. $this->prefix('panel')]);
+		if ($debugMode) {
+			$elasticaDefinition->addSetup('setLogger', ['@' . $this->prefix('panel')]);
 		}
-		
+
 		$containerBuilder->addDefinition('elastica')
 				->setClass('Elastica\Client')
 				->setFactory('@container::getService', [$this->prefix('elastica')])
 				->setAutowired(FALSE);
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('elasticSearchManager'))
 				->setClass('Bazo\ElasticSearch\ElasticSearchManager', $commandArguments)
 		;
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('infoCommand'))
-				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo', ['@'.$this->prefix('elastica')])
-				->addTag('consoleCommand')
+				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo', ['@' . $this->prefix('elastica')])
+				->addTag(ConsoleExtension::COMMAND_TAG)
 				->setAutowired(FALSE)
 		;
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('createIndexCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchCreateIndex', $commandArguments)
-				->addTag('consoleCommand')
+				->addTag(ConsoleExtension::COMMAND_TAG)
 				->setAutowired(FALSE)
 		;
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('dropIndexCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchDropIndex', $commandArguments)
-				->addTag('consoleCommand')
+				->addTag(ConsoleExtension::COMMAND_TAG)
 				->setAutowired(FALSE)
 		;
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('createTypeCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchCreateType', $commandArguments)
-				->addTag('consoleCommand')
+				->addTag(ConsoleExtension::COMMAND_TAG)
 				->setAutowired(FALSE)
 		;
-		
+
 		$containerBuilder
 				->addDefinition($this->prefix('prepareCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchMappingsCreate', $commandArguments)
-				->addTag('consoleCommand')
+				->addTag(ConsoleExtension::COMMAND_TAG)
 				->setAutowired(FALSE)
 		;
 	}
@@ -108,4 +113,3 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 
 
 }
-
