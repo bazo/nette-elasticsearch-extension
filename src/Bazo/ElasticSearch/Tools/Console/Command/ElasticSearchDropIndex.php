@@ -20,6 +20,7 @@ class ElasticSearchDropIndex extends ElasticSearchCommand
 	{
 		$this
 			->setName('es:index:drop')
+			->addArgument('index', InputArgument::OPTIONAL)
 			->setDescription('drops index(es)')
 		;
 	}
@@ -29,7 +30,11 @@ class ElasticSearchDropIndex extends ElasticSearchCommand
 	{
 		$this->output = $output;
 		
-		$selectedIndexes = $this->askIndexes();
+		$selectedIndexes = [$input->getArgument('index')];
+		
+		if(empty($selectedIndexes)) {
+			$selectedIndexes = $this->askIndexes();
+		}
 		
 		foreach($selectedIndexes as $indexName) {
 			$index = $this->elastica->getIndex($indexName);
