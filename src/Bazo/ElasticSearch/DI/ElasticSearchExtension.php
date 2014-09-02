@@ -2,40 +2,33 @@
 
 namespace Bazo\ElasticSearch\DI;
 
-use Bazo\Console\DI\ConsoleExtension;
-
-
-
 /**
- * Description of ElasticSearchExtension
- *
  * @author Martin Bažík <martin@bazo.sk>
  */
 class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 {
 
 	private $defaults = [
-		'config' => [
-			'host' => NULL,
-			'port' => NULL,
-			'path' => NULL,
-			'url' => NULL,
-			'transport' => NULL,
-			'persistent' => TRUE,
-			'timeout' => NULL,
-			'connections' => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
-			'roundRobin' => FALSE,
-			'log' => '%debugMode%',
-			'retryOnConflict' => 0]
+		'config'	 => [
+			'host'				 => NULL,
+			'port'				 => NULL,
+			'path'				 => NULL,
+			'url'				 => NULL,
+			'transport'			 => NULL,
+			'persistent'		 => TRUE,
+			'timeout'			 => NULL,
+			'connections'		 => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
+			'roundRobin'		 => FALSE,
+			'log'				 => '%debugMode%',
+			'retryOnConflict'	 => 0]
 		,
-		'mapping' => [
-			'types' => [],
-			'indices' => []
+		'mapping'	 => [
+			'types'		 => [],
+			'indices'	 => []
 		],
-		'analyzers' => [],
-		'filters' => []
+		'analyzers'	 => [],
+		'filters'	 => []
 	];
-
 
 
 	public function loadConfiguration()
@@ -72,43 +65,42 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 		$containerBuilder
 				->addDefinition($this->prefix('infoCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo', ['@' . $this->prefix('elastica')])
-				->addTag(ConsoleExtension::COMMAND_TAG)
+				->addTag('console.command')
+				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)
 		;
 
 		$containerBuilder
 				->addDefinition($this->prefix('createIndexCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchCreateIndex', $commandArguments)
-				->addTag(ConsoleExtension::COMMAND_TAG)
+				->addTag('console.command')
+				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)
 		;
 
 		$containerBuilder
 				->addDefinition($this->prefix('dropIndexCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchDropIndex', $commandArguments)
-				->addTag(ConsoleExtension::COMMAND_TAG)
+				->addTag('console.command')
+				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)
 		;
 
 		$containerBuilder
 				->addDefinition($this->prefix('createTypeCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchCreateType', $commandArguments)
-				->addTag(ConsoleExtension::COMMAND_TAG)
+				->addTag('console.command')
+				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)
 		;
 
 		$containerBuilder
 				->addDefinition($this->prefix('prepareCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchMappingsCreate', $commandArguments)
-				->addTag(ConsoleExtension::COMMAND_TAG)
+				->addTag('console.command')
+				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)
 		;
-	}
-
-
-	public function beforeCompile()
-	{
-		$containerBuilder = $this->getContainerBuilder();
 	}
 
 
