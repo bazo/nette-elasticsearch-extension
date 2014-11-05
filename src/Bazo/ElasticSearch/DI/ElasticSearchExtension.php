@@ -9,19 +9,6 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 {
 
 	private $defaults = [
-		'config'	 => [
-			'host'				 => NULL,
-			'port'				 => NULL,
-			'path'				 => NULL,
-			'url'				 => NULL,
-			'transport'			 => NULL,
-			'persistent'		 => TRUE,
-			'timeout'			 => NULL,
-			'connections'		 => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
-			'roundRobin'		 => FALSE,
-			'log'				 => '%debugMode%',
-			'retryOnConflict'	 => 0]
-		,
 		'mapping'	 => [
 			'types'		 => [],
 			'indices'	 => []
@@ -37,25 +24,7 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 
 		$config = $this->getConfig($this->defaults);
 
-		$debugMode = $containerBuilder->expand('%debugMode%');
-
-		$commandArguments = ['@' . $this->prefix('elastica'), $config['types'], $config['indices'], $config['analyzers'], $config['filters']];
-
-		$containerBuilder
-				->addDefinition($this->prefix('panel'))
-				->setClass('Bazo\ElasticSearch\Diagnostics\ElasticSearchPanel')
-				->setFactory('Bazo\ElasticSearch\Diagnostics\ElasticSearchPanel::register');
-
-		$elasticaDefinition = $containerBuilder->addDefinition($this->prefix('elastica'))
-				->setClass('Elastica\Client', [$config['config']]);
-		if ($debugMode) {
-			$elasticaDefinition->addSetup('setLogger', ['@' . $this->prefix('panel')]);
-		}
-
-		$containerBuilder->addDefinition('elastica')
-				->setClass('Elastica\Client')
-				->setFactory('@container::getService', [$this->prefix('elastica')])
-				->setAutowired(FALSE);
+		$commandArguments = [$config['types'], $config['indices'], $config['analyzers'], $config['filters']];
 
 		$containerBuilder
 				->addDefinition($this->prefix('elasticSearchManager'))
@@ -64,7 +33,7 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 
 		$containerBuilder
 				->addDefinition($this->prefix('infoCommand'))
-				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo', ['@' . $this->prefix('elastica')])
+				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo')
 				->addTag('console.command')
 				->addTag('kdyby.console.command')
 				->setAutowired(FALSE)

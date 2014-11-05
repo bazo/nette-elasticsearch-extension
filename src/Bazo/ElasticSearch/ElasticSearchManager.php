@@ -13,7 +13,7 @@ class ElasticSearchManager
 {
 	/** @var \Elastica\Client */
 	protected $elastica;
-	
+
 	/** @var array */
 	protected $types;
 
@@ -25,8 +25,8 @@ class ElasticSearchManager
 
 	/** @var array */
 	protected $filters;
-	
-	public function __construct(Client $elastica, $types, $indices, $analyzers, $filters)
+
+	public function __construct($types, $indices, $analyzers, $filters, Client $elastica)
 	{
 		$this->elastica = $elastica;
 		$this->types = is_array($types) ? $types : [];
@@ -34,7 +34,7 @@ class ElasticSearchManager
 		$this->analyzers = $analyzers;
 		$this->filters = $filters;
 	}
-	
+
 
 
 	public function getTypes()

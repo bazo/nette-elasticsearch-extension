@@ -16,7 +16,7 @@ abstract class ElasticSearchCommand extends Console\Command\Command
 {
 	/** @var \Elastica\Client */
 	protected $elastica;
-	
+
 	/** @var array */
 	protected $types;
 
@@ -32,7 +32,7 @@ abstract class ElasticSearchCommand extends Console\Command\Command
 	/** @var \Symfony\Component\Console\Helper\DialogHelper */
 	protected $dialog;
 
-	public function __construct(Client $elastica, $types, $indices, $analyzers, $filters)
+	public function __construct($types, $indices, $analyzers, $filters, Client $elastica)
 	{
 		$this->elastica = $elastica;
 		$this->types = is_array($types) ? $types : [];
